@@ -18,7 +18,7 @@ public class List
             _context = dataContext;
         }
 
-        public async Task<List<ActivityTask>> Handle(Query request, CancellationToken cancellationToken) =>
+        public async Task<List<ActivityTask?>> Handle(Query request, CancellationToken cancellationToken) =>
             await _context.Activities.ToListAsync(cancellationToken: cancellationToken);
     }
 }

@@ -5,5 +5,5 @@ namespace Persistence;
 
 public class DataContext(DbContextOptions<DataContext> options) : DbContext(options)
 {
-    public DbSet<ActivityTask> Activities { get; set; }
+    public DbSet<ActivityTask?> Activities { get; set; }
 }
