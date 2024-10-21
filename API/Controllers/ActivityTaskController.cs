@@ -9,15 +9,8 @@ namespace API.Controllers;
 
 public class ActivityTaskController : BaseApiController
 {
-    private readonly IMediator _mediator;
-
-    public ActivityTaskController(IMediator mediator)
-    {
-        _mediator = mediator;
-    }
-
     [HttpGet] //api/activitytask
-    public async Task<ActionResult<List<ActivityTask>>> GetActivities() => await _mediator.Send(new List.Query());
+    public async Task<ActionResult<List<ActivityTask>>> GetActivities() => await Mediator?.Send(new List.Query())!;
 
     [HttpGet("{id}")] //api/activitytask/{id}
     public async Task<ActionResult<ActivityTask>> GetActivity(Guid id) => Ok();
