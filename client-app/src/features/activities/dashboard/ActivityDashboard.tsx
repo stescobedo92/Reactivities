@@ -6,16 +6,19 @@ import ActivityForm from "../form/ActivityForm.tsx";
 
 interface Props {
     activities: Activity[];
+    selectedActivity: Activity | undefined;
+    selectActivity: (id: string) => void;
+    cancelSelectActivity: () => void;
 }
 
-export default function ActivityDashboard({activities}: Props) {
+export default function ActivityDashboard({activities, selectActivity, selectedActivity, cancelSelectActivity}: Props) {
   return (
     <Grid>
         <Grid.Column width='10'>
-            <ActivityList activities={activities} />
+            <ActivityList activities={activities} selectActivity={selectActivity} />
         </Grid.Column>
         <Grid.Column width='6'>
-            {activities[0] && <ActivityDetails activities={activities[0]} />}
+            {selectedActivity && <ActivityDetails activities={selectedActivity} cancelSelectActivity={cancelSelectActivity} />}
             <ActivityForm />
         </Grid.Column>
     </Grid>
