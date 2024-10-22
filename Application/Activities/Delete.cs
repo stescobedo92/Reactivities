@@ -1,23 +1,25 @@
-using Domain;
 using MediatR;
 using Persistence;
 
 namespace Application.Activities;
 
-public abstract class Create
+public abstract class Delete
 {
     public class Command : IRequest<Unit>
     {
-        public ActivityTask? Activity { get; set; }
+        public Guid Id { get; set; }
     }
     
     public class Handler(DataContext _context) : IRequestHandler<Command, Unit>
     {
         public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
         {
-            _context.Activities.Add(request.Activity);
+            var activity = await _context.Activities.FindAsync(request.Id, cancellationToken);
+
+            _context.Activities.Remove(activity);
+
             await _context.SaveChangesAsync(cancellationToken);
-            
+
             return Unit.Value;
         }
     }

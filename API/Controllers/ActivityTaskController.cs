@@ -13,19 +13,15 @@ public class ActivityTaskController : BaseApiController
     public async Task<ActionResult<ActivityTask>> GetActivity(Guid id) => await Mediator?.Send(new Details.Query { Id = id })!;
 
     [HttpPost] //api/activitytask/
-    public async Task<IActionResult> CreateActivity(ActivityTask activityTask)
-    {
-        await Mediator?.Send(new Create.Command { Activity = activityTask })!;
-        
-        return Ok();
-    }
+    public async Task<IActionResult> CreateActivity(ActivityTask activityTask) => Ok(await Mediator?.Send(new Create.Command { Activity = activityTask })!);
+    
+    [HttpDelete("{id}")] //api/activitytask/
+    public async Task<IActionResult> DeleteActivity(Guid id) => Ok(await Mediator?.Send(new Delete.Command { Id = id })!);
     
     [HttpPut("{id}")] //api/activitytask/id
     public async Task<IActionResult> EditActivity(Guid id, ActivityTask activityTask)
     {
         activityTask.Id = id;
-        await Mediator?.Send(new Edit.Command { Activity = activityTask })!;
-        
-        return Ok();
+        return Ok(await Mediator?.Send(new Edit.Command { Activity = activityTask })!);
     }
 }
