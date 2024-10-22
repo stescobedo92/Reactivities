@@ -1,4 +1,3 @@
-import './App.css'
 import {useEffect, useState} from "react";
 import axios from "axios";
 import {Header, List} from "semantic-ui-react";
