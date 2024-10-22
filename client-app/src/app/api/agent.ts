@@ -1,7 +1,22 @@
 import axios from 'axios';
 import {Activity} from "../models/activity.ts";
 
+const sleep = (delay: number) => {
+    return new Promise((resolve) => {
+        setTimeout(resolve, delay);
+    });
+}
+
 axios.defaults.baseURL = 'http://localhost:5104/api';
+axios.interceptors.response.use(async response => {
+    try{
+        await sleep(1000);
+        return response;
+    } catch (error) {
+        console.log(error);
+        return await Promise.reject(error);
+    }
+});
 
 const responseBody = <T>(response: any) => response.data;   // This is a generic function that takes a response and returns the data property of the response.
 
