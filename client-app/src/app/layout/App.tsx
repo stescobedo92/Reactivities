@@ -19,36 +19,8 @@ function App() {
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-    /*agent.Activities.list().then(response => {
-            const activities: Activity[] = [];
-            response.forEach((activity: Activity) => {
-                activity.date = activity.date.split('T')[0];
-                activities.push(activity);
-            });
-            setActivities(activities);
-            setLoading(false);
-        });*/
     activityStore.loadActivities();
-
-
   }, [activityStore]);
-
-  function handleSelectedActivity(id: string) {
-      setSelectedActivity(activities.find(x => x.id === id));
-  }
-
-  function handleCancelSelectedActivity() {
-      setSelectedActivity(undefined);
-  }
-
-  function handleFormOpen(id?: string) {
-      id ? handleSelectedActivity(id) : handleCancelSelectedActivity();
-      setEditMode(true);
-  }
-
-  function handleFormClose() {
-      setEditMode(false);
-  }
 
   function handleCreateOrEditActivity(activity: Activity) {
       setSubmitting(true);
@@ -82,16 +54,10 @@ function App() {
 
   return (
       <>
-        <NavBar openForm={handleFormOpen} />
+        <NavBar />
         <Container style={{marginTop: '7em'}}>
             <ActivityDashboard
                 activities={activityStore.activities}
-                selectedActivity={selectedActivity}
-                selectActivity={handleSelectedActivity}
-                cancelSelectActivity={handleCancelSelectedActivity}
-                editMode={editMode}
-                openForm={handleFormOpen}
-                closeForm={handleFormClose}
                 createOrEdit={handleCreateOrEditActivity}
                 deleteActivity={handleDeleteActivity}
                 submitting={submitting}
