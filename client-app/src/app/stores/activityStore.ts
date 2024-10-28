@@ -21,17 +21,21 @@ export class ActivityStore {
     }
 
     loadActivities = async () => {
-        this.loadingInitial = true;
+        this.setLadingInitial(true);
         try {
             const activities = await agent.Activities.list();
             activities.forEach((activity: Activity) => {
                 activity.date = activity.date.split('T')[0];
                 this.activities.push(activity);
             });
-            this.loadingInitial = false;
+            this.setLadingInitial(false);
         } catch (error) {
             console.log(error);
-            this.loadingInitial = false;
+            this.setLadingInitial(false);
         }
+    }
+
+    setLadingInitial = (state: boolean) => {
+        this.loadingInitial = state;
     }
 }
