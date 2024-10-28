@@ -85,4 +85,17 @@ export class ActivityStore {
             this.loading = false;
         }
     }
+
+    deleteActivity = async (id: string) => {
+        this.loading = true;
+        try {
+            await agent.Activities.delete(id);
+            this.activities = [...this.activities.filter(a => a.id !== id)];
+            if (this.selectedActivity?.id === id) this.cancelSelectedActivity();
+            this.loading = false;
+        } catch (error) {
+            console.log(error);
+            this.loading = false;
+        }
+    }
 }
