@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {Button, Container} from "semantic-ui-react";
+import {Container} from "semantic-ui-react";
 import {Activity} from "../models/activity.ts";
 import NavBar from "./NavBar.tsx";
 import ActivityDashboard from "../../features/activities/dashboard/ActivityDashboard.tsx";
@@ -15,11 +15,11 @@ function App() {
   const [activities, setActivities] = useState<Activity[]>([]);
   const [selectedActivity, setSelectedActivity] = useState<Activity | undefined>(undefined);
   const [editMode, setEditMode] = useState(false);
-  const [loading, setLoading] = useState(true);
+  //const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-    agent.Activities.list().then(response => {
+    /*agent.Activities.list().then(response => {
             const activities: Activity[] = [];
             response.forEach((activity: Activity) => {
                 activity.date = activity.date.split('T')[0];
@@ -27,8 +27,11 @@ function App() {
             });
             setActivities(activities);
             setLoading(false);
-        });
-  }, []);
+        });*/
+    activityStore.loadActivities();
+
+
+  }, [activityStore]);
 
   function handleSelectedActivity(id: string) {
       setSelectedActivity(activities.find(x => x.id === id));
@@ -75,16 +78,14 @@ function App() {
     });
   }
 
-  if (loading) return <LoadingComponent content={'Loading activities...'} />
+  if (activityStore.loadingInitial) return <LoadingComponent content={'Loading activities...'} />
 
   return (
       <>
         <NavBar openForm={handleFormOpen} />
         <Container style={{marginTop: '7em'}}>
-            <h2>{activityStore.title}</h2>
-            <Button content='Add exclamation!' positive onClick={activityStore.setTitle} />
             <ActivityDashboard
-                activities={activities}
+                activities={activityStore.activities}
                 selectedActivity={selectedActivity}
                 selectActivity={handleSelectedActivity}
                 cancelSelectActivity={handleCancelSelectedActivity}
