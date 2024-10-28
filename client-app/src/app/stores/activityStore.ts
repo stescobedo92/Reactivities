@@ -1,6 +1,7 @@
 import {action, makeObservable, observable} from "mobx";
 import {Activity} from "../models/activity.ts";
 import agent from "../api/agent.ts";
+import {v4 as uuid} from 'uuid';
 
 export class ActivityStore {
     activities: Activity[] = [];
@@ -54,5 +55,34 @@ export class ActivityStore {
 
     closeForm = () => {
         this.editMode = false;
+    }
+
+    createActivity = async (activity: Activity) => {
+        this.loading = true;
+        activity.id = uuid();
+        try {
+            await agent.Activities.create(activity);
+            this.activities.push(activity);
+            this.selectedActivity = activity;
+            this.editMode = false;
+            this.loading = false;
+        } catch (error) {
+            console.log(error);
+            this.loading = false;
+        }
+    }
+
+    updateActivity = async (activity: Activity) => {
+        this.loading = true;
+        try {
+            await agent.Activities.update(activity);
+            this.activities = [...this.activities.filter(a => a.id !== activity.id), activity];
+            this.selectedActivity = activity;
+            this.editMode = false;
+            this.loading = false;
+        } catch (error) {
+            console.log(error);
+            this.loading = false;
+        }
     }
 }
